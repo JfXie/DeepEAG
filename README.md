@@ -43,16 +43,14 @@ DeepEAG is tested to work under:
 
 | File name  | Description |
 | ------------- | ------------- |
-| MDCuiMiDisease.csv  | MiRNA-disease associations obtained from HMDD v3.0 database |
-| DPDrugBankDrugProtein5.csv  | Drug-protein associations obtained from DrugBank v5.0 database  |
-| LMSNPLncMi.csv  | MiRNA-lncRNA associations obtained from lncRNASNP2 database  |
-| LDAllLncDisease.csv| LncRNA-disease associations obtained from lncRNASNP2 and LncRNADisease database  |
-| DrugDiseaseDrugDisease.csv| Drug-disease associations obtained from CTD:update 2019 database| 
-| PDDisGeNETProteinDisease20.csv|  Protein-disease associations obtained from DisGeNET database| 
-| MPmiRTarBaseMiProtein5.csv| MiRNA-protein associations obtained from miRTarBase: update 2018 database| 
-| LPLncRNA2TargetLncProtein3.csv|  LncRNA-protein associations obtained from LncRNA2Target v2.0 database| 
-| PPI.csv| Protein-protein interactions obtained from STRING database for model training and prediction| 
-| AllProteinSequence.csv| Original protein sequence| 
+| Clinvar_epilepsy_genes.fasta  | Epilepsy-associated genes obtained from ClinVar database and their sequences obtained from Uniprot database|
+| DisGeNET_epilepsy_genes.fasta  | Epilepsy-associated genes obtained from DisGeNET database and their sequences obtained from Uniprot database  |
+| EpilepsyGeneDatabase_epilepsy_genes.fasta  | Epilepsy-associated genes obtained from EpilepsyGeneDatabase database and their sequences obtained from Uniprot database   |
+| Genes4Epilepsy_genes.fasta| Epilepsy-associated genes obtained from Genes4Epilepsy database and their sequences obtained from Uniprot database |
+| GWAS_epilepsy_genes.fasta| Epilepsy-associated genes obtained from GWAS database and their sequences obtained from Uniprot database| 
+| Uniprot_epilepsy_genes.fasta|  Epilepsy-associated genes and their sequences obtained from Uniprot database| 
+| Wang_epilepsy_genes.fasta| Epilepsy-associated genes obtained from Wang et al. and their sequences obtained from Uniprot database| 
+
 
 # Quick start
 To reproduce our results:
