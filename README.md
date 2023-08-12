@@ -55,53 +55,59 @@ DeepEAG is tested to work under:
 # Quick start
 To reproduce our results:
 
-## 1，Data preprocessing and construction of multi-source heterogeneous biomolecular networks
+## 1，Download uniref dataset and install the required toolkit
 ```
-python ./src/data_process.py --path ./data/  && python ./src/GetNodeEdgeNum.py --save ./data/ && python ./src/GetObjectEdgeNum.py --save ./data/
+cd tools/ncbi-blast && wget -c https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz && tar -zxvf ncbi-blast-2.13.0+-x64-linux.tar.gz
+
+cd tools/uniref50 && wget -c https://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref50/uniref50.fasta.gz && tar -zxvf uniref50.fasta.gz
+
+/tools/ncbi-blast/ncbi-blast-2.13.0+/bin/makeblastdb -dbtype prot -in uniref50.fasta -input_type fasta -parse_seqids -out uniref50_blast
 ```
-**Arguments**:
-
-| **Arguments** | **Detail** |
-| --- | --- |
-| **path** | Path of the assciation data among different biomoleculars|
-| **save** | Save path of the generated data|
 
 
 
-## 2，Calculate the protein attribute features
+## 2，Run generate_pssm_profile.py to generate pssm profiles for each gene sequence, the options are:
 ```
-python ./src/ACDencoder.py --path ./data/ --save ./data/
+python src/generate_pssm_profile.py --file /data/Clinvar_epilepsy_genes.fasta --blastpgp /tools/ncbi-blast/ncbi-blast-2.13.0+/bin --db /tools/uniref50/uniref50_blast --outdir /src/pssm_profile
 ```
 **Arguments**:
 
 | **Arguments** | **Detail** |
 | --- | --- |
-| **path** | Path of the protein sequence data|
-| **save** | Save path of the generated data|
+| **file** | Protein sequence file in fasta format|
+| **blastpgp** | The path of NCBI psiblast program|
+| **db** | The path of unief50 database|
+| **outdir** | The path of output directory|
 
-
-## 3，Calculate the protein graph features
+## 3，Run generate_features/main.py to generate statistical gene sequence patterns for each gene sequence, the options are:
 ```
-python -m openne --model deepwalk --dataset ./data/AllNodeEdge.csv --num-paths 10 --path-length 80 --window 10
-
+python /src/generate_features/main.py --file /data/Clinvar_epilepsy_genes.fasta --type AAC --out /src/AAC_encoding.tsv
+python /src/generate_features/main.py --file /data/Clinvar_epilepsy_genes.fasta --type PAAC --out /src/PAAC_encoding.tsv
+python /src/generate_features/main.py --file /data/Clinvar_epilepsy_genes.fasta --type PSSMC --path /src/pssm_profiles --out /src/PSSMC_encoding.tsv
+python /src/generate_features/main.py --file /data/Clinvar_epilepsy_genes.fasta --type OHE --out /src/OHE_encoding.tsv
 ```
 **Arguments**:
 
 | **Arguments** | **Detail** |
 | --- | --- |
-| **dataset** | The graph data. |
-| **num-paths** | Number of random walks that starts at each node. |
-| **path-length** | Length of random walk started at each node. |
-| **window** | Window size of skip-gram model.  |
+| **file** | The input protein sequence file in fasta format. |
+| **type** | The encoding type need to be calculated. |
+| **path** | The data file path used for 'PSSMC' encodings. |
+| **out** | The path of generated descriptor file.  |
 
 
 
-## 4，Training and prediction under 5-fold cross-validation
+## 4，Run DeepEAG_cv/main.py to train and validate model by 5-fold cross-validation, the options are:
 ```
-python ./src/training.py && python ./src/roc_plot.py && python ./src/pr_plot.py
+# please do not change the feature and label file name
+python /src/DeepEAG_cv/main.py --feature_path /src --label_path /data
 ```
+**Arguments**:
 
-
+| **Arguments** | **Detail** |
+| --- | --- |
+| **feature_path** | The generated feature descriptor file path. |
+| **label_path** | The label file path. |
 
 
 
@@ -110,13 +116,13 @@ python ./src/training.py && python ./src/roc_plot.py && python ./src/pr_plot.py
 
 # Contributing
 
-All authors were involved in the conceptualization of the proposed method. LWX and SLP conceived and supervised
-the project. BYJ and HTZ designed the study and developed the approach. BYJ and HTZ implemented and applied the method to microbial data. BYJ and HTZ analyzed the results. LWX and SLP contributed to the review of the manuscript before submission for publication. All authors read and approved the final manuscript.
+All authors were involved in the conceptualization of the proposed method. DFZ and WL conceived and supervised
+the project. JFX and WL designed the study and developed the approach. JFX implemented and applied the method to microbial data. DFZ and WL analyzed the results. DFZ and WL contributed to the review of the manuscript before submission for publication. All authors read and approved the final manuscript.
 
 
 
 # Contacts
-If you have any questions or comments, please feel free to email: byj@hnu.edu.cn, slpeng@hnu.edu.cn.
+If you have any questions or comments, please feel free to email: gordon8848@hnu.edu.cn, rj\_wli@hnu.edu.cn.
 
 # License
 
